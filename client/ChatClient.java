@@ -1,69 +1,70 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
 
 public class ChatClient {
 
     private Socket socket;
-    private BufferedReader reader;
-    private PrintWriter writer;
-    private JTextArea chatArea;
-    private JTextField messageField;
+    private BufferedReader input;
+    private PrintWriter output;
+    private JTextArea messageArea;
+    private JTextField inputField;
+    private String clientName;
 
-    public ChatClient(String serverAddress, int serverPort) {
+    public ChatClient(String address, int port) {
         try {
-            socket = new Socket(serverAddress, serverPort);
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            writer = new PrintWriter(socket.getOutputStream(), true);
+            socket = new Socket(address, port);
+            input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            output = new PrintWriter(socket.getOutputStream(), true);
+            setupGUI();
 
-            createUI();
-
-            new Thread(() -> {
-                try {
-                    String message;
-                    while ((message = reader.readLine()) != null) {
-                        chatArea.append(message + "\n");
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }).start();
-
+            // Start a thread to listen for incoming messages
+            new Thread(this::listenForMessages).start();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void createUI() {
+    private void setupGUI() {
         JFrame frame = new JFrame("Chat Client");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
+        messageArea = new JTextArea(20, 40);
+        messageArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(messageArea);
+        inputField = new JTextField(40);
 
-        chatArea = new JTextArea();
-        chatArea.setEditable(false);
-        frame.add(new JScrollPane(chatArea), BorderLayout.CENTER);
-
-        messageField = new JTextField();
-        messageField.addActionListener(e -> {
-            sendMessage(messageField.getText());
-            messageField.setText("");
+        inputField.addActionListener(e -> {
+            String message = inputField.getText();
+            if (!message.isEmpty()) {
+                output.println(message);
+                inputField.setText("");
+            }
         });
-        frame.add(messageField, BorderLayout.SOUTH);
 
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(inputField, BorderLayout.SOUTH);
+
+        frame.getContentPane().add(panel);
+        frame.pack();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 
-    private void sendMessage(String message) {
-        writer.println(message);
+    private void listenForMessages() {
+        String message;
+        try {
+            while ((message = input.readLine()) != null) {
+                messageArea.append(message + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
-        String serverAddress = "127.0.0.1";
-        int serverPort = 12345;
-        new ChatClient(serverAddress, serverPort);
+        SwingUtilities.invokeLater(() -> new ChatClient("127.0.0.1", 12345));
     }
 }
 
