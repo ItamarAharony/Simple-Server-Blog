@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd client
-rm ChatClient
+rm ChatClient.class
 javac ChatClient.java
 java ChatClient
 
