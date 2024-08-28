@@ -56,7 +56,7 @@ The repository is organized as follows:
   kill -9 PID
   ```
   where PID is a process ID number.
-  You should then try to run `./boot.sh` again.
+  You should then try to run `./boot_server.sh` again.
 
 
 ### Client
