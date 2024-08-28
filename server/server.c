@@ -1,5 +1,4 @@
 #include "chat.h"
-#include "queue.h"
 #include <pthread.h>
 #include <string.h>
 #include <stdio.h>

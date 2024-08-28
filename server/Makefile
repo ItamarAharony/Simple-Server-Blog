@@ -3,7 +3,7 @@ CFLAGS = -Wall -pthread
 
 all: server
 
-server: server.c chat.h queue.h
+server: server.c chat.h 
 	$(CC) $(CFLAGS) -o server server.c
 
 clean:
