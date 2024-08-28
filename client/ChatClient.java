@@ -10,7 +10,6 @@ public class ChatClient {
     private PrintWriter output;         // Writer for sending messages to the server
     private JTextArea messageArea;      // Text area to display messages from the chat
     private JTextField inputField;      // Input field for typing and sending messages
-    private String clientName;          // (Optional) Client's name, not used currently
 
     // Constructor to initialize the client connection and GUI
     public ChatClient(String address, int port) {
@@ -44,8 +43,14 @@ public class ChatClient {
         inputField.addActionListener(e -> {
             String message = inputField.getText();
             if (!message.isEmpty()) {
-                output.println(message);             // Send the message to the server
-                inputField.setText("");              // Clear the input field
+                // Append "Me: " to the client's message and display it immediately
+                messageArea.append("Me: " + message + "\n");
+
+                // Send the message to the server
+                output.println(message);
+
+                // Clear the input field
+                inputField.setText("");
             }
         });
 
@@ -63,17 +68,23 @@ public class ChatClient {
     }
 
     // Method to continuously listen for messages from the server
-    private void listenForMessages() {
-        String message;
-        try {
-            // Keep reading messages from the server and append them to the message area
-            while ((message = input.readLine()) != null) {
+private void listenForMessages() {
+    String message;
+    try {
+        // Keep reading messages from the server and append them to the message area
+        while ((message = input.readLine()) != null) {
+            // Check if the message is from the current client
+            if (message.startsWith("client " + socket.getLocalPort())) {
+                messageArea.append("Me: " + message.substring(message.indexOf(':') + 2) + "\n");
+            } else {
                 messageArea.append(message + "\n");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
+
 
     // Main method to start the chat client
     public static void main(String[] args) {
@@ -81,4 +92,3 @@ public class ChatClient {
         SwingUtilities.invokeLater(() -> new ChatClient("127.0.0.1", 12345));
     }
 }
-

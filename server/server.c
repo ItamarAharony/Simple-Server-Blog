@@ -93,7 +93,7 @@ void *handle_client(void *client_socket) {
 
         // Format the message to include the client's socket number
         char message[1100];
-        snprintf(message, sizeof(message), "client %d: \"%s\"", sock, buffer);
+        snprintf(message, sizeof(message), "client %d: %s", sock, buffer);
 
         // Print the message to the server's terminal
         printf("%s\n", message);
