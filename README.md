@@ -7,8 +7,10 @@ This repository contains code for a simple blog server. The server handles commu
 ## Dependencies
 
 This project is currently made for Linux machines or Linux VMs. 
-    Server: Requires a C compiler (such gcc) and make.
-    Client: Requires Java Development Kit (JDK) for compiling and running the Java application.
+
+Server: Requires a C compiler (such gcc) and make.
+
+Client: Requires Java Development Kit (JDK) for compiling and running the Java application.
     
 
 
