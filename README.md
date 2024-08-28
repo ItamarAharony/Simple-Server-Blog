@@ -5,9 +5,11 @@
 This repository contains code for a simple blog server. The server handles communication between clients, broadcasting messages sent by one client to all other connected clients.
 
 ## Dependencies
-    This project is currently made for Linux machines or Linux VMs. 
+
+This project is currently made for Linux machines or Linux VMs. 
     Server: Requires a C compiler (such gcc) and make.
     Client: Requires Java Development Kit (JDK) for compiling and running the Java application.
+    
 
 
 ## Repository Structure
