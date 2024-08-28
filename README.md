@@ -78,10 +78,7 @@ The repository is organized as follows:
     Type your message into the input field.
     Press <Enter> to send the message. The message will be transmitted to the server and broadcasted to all connected clients.
 
-4. Viewing Messages:
 
-    Messages from other clients will appear in the message area with the format "client <socket number>: <message>".
-    Messages you send will appear with the format "Me: <message>".
 
 
 
