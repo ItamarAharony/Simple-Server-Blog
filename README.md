@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains code for a simple blog server. The server handles communication between clients, broadcasting messages sent by one client to all other connected clients.
+This repository contains code for a simple blog server. The server handles communication between clients, broadcasting messages sent by one client to all other connected clients. This is a simplification of a freelance project whose complete implementation has been kept confidential.
 
 ## Dependencies
 
